@@ -1,0 +1,131 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>House Prediction System</title>
+
+    <style>
+
+        input[type="text"]::placeholder{
+            color: aliceblue;
+        }
+        @media only screen and (min-width:850px){
+            .bhkk{
+                margin-left: 290px;
+            }
+            .bnt button{
+                max-width: 20%;
+            }
+        }
+        .Heading h1{
+            color: transparent;
+            -webkit-text-stroke: 1px #fff;
+            background: rgba(39, 37, 37, 0.447);
+            -webkit-background-clip: text;
+        }
+        .design{
+            color: transparent;
+            -webkit-text-stroke: 1px #fff;
+            background: rgb(38, 37, 37);
+        }
+
+        @media only screen and (max-width:850px){
+            .card{
+                margin-top: 5px;
+            }
+            .Heading h1{
+                font-size: large;
+            }
+            .design{
+                font-size: large;
+            }
+        }
+
+    </style>
+  </head>
+  <body class="bg-dark" style="background-image: url(https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1931&q=80); background-size: 100% 105vh">
+    <div class="container">
+        <div class="row">
+            <div class="card" style="width:100%; height: 100%; margin-top: 60px; background: transparent; border: 3px solid black;">
+                <div class="card-header Heading" style="text-align: center; color: aliceblue;">
+                    <h1>Living in BANGALORE .? We got you Covered</h1>
+                    <h5>Want to predict the price of new House .? Try filling the details below :</h5>
+                </div>
+                <div class="card-body" style="color: aliceblue">
+                    <form method="post" accept-charset="utf-8">
+
+                        <div class="row">
+                            <div class="col-md-6 form-group" style="text-align:center">
+                                <label><b>Select the Location:</b></label>
+                                <select class="selectpicker form-control" style="background: transparent; text-align: center; color: aliceblue;font-weight: bolder;border:3px solid aliceblue" name="location" id="location" required="1">
+                                    {% for location in locations %}
+                                        <option value="{{ location }}" style="color: aliceblue; background:rgb(28, 27, 27)">{{ location }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group" style="text-align:center">
+                                <label><b>Enter Square Feet:</b></label>
+                                <input type="text" class="form-control" style="background: transparent; text-align: center; color: aliceblue;font-weight: bolder;border:3px solid aliceblue" id="total_sqft" name="total_sqft" placeholder="Enter Square Feet">
+                            </div>
+                            <div class="col-md-6 form-group bhkk" style="text-align:center;">
+                                <label><b>Enter BHK:</b></label>
+                                <input type="text" class="form-control" style="background: transparent; text-align: center; color: aliceblue;font-weight: bolder;border:3px solid aliceblue" id="bhk" name="bhk" placeholder="Enter BHK">
+                            </div>
+                            <div class="col-md-12 form-group bnt" style="text-align:center">
+                                <button class="btn btn-primary form-control" style="width: 50%;text-align: center; background-color: black; color: aliceblue;" onclick="send_data()">Predict Price</button>
+                                
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+
+                    <div class="col-md-12" style="text-align:center">
+                        <h3><span id="prediction" class="design"></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1 foot" style="color: aliceblue; font-weight: bolder; margin-top: 80px;">© 2023 Bangalore House Prediction <br>
+        Built by => Rahul, Praveen, Rajveer, Pragnya </p>
+    </footer>
+
+    <script>
+
+        function form_handler(event){
+            event.preventDefault();
+        }
+
+        function send_data(){
+            document.querySelector('form').addEventListener('submit',form_handler)
+
+            var fd= new FormData(document.querySelector('form'));
+            var xhr= new XMLHttpRequest();
+            xhr.open('POST','/predict',true);
+            document.getElementById('prediction').innerHTML= "Wait Predicting Price..!!!";
+            xhr.onreadystatechange= function(){
+                if(xhr.readyState == XMLHttpRequest.DONE){
+                    document.getElementById('prediction').innerHTML= "Prediction: ₹ "+xhr.responseText;
+                }
+            };
+
+            xhr.onload= function(){};
+            xhr.send(fd);
+        }
+    </script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+  </body>
+</html>
